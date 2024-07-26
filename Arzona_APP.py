@@ -7,7 +7,7 @@ import os
 # Google Drive file ID and URL
 file_id = '1L69uaQbqFQuAYGcZAkBMsvUQ-jdycY0FMfvjZ9WZ7HI'
 url = f'https://drive.google.com/uc?id={file_id}'
-file_path = 'Zillow_Data_Complete.xlsx'
+file_path = 'Zillow Data.xlsx'
 
 # Download the file from Google Drive
 if not os.path.exists(file_path):
