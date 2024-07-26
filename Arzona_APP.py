@@ -9,19 +9,31 @@ file_id = '1L69uaQbqFQuAYGcZAkBMsvUQ-jdycY0FMfvjZ9WZ7HI'
 url = f'https://drive.google.com/uc?id={file_id}'
 file_path = 'Zillow Data.xlsx'
 
-# Download the file from Google Drive
+# Download the file from Google Drive if it doesn't exist
 if not os.path.exists(file_path):
-    gdown.download(url, file_path, quiet=False)
+    try:
+        gdown.download(url, file_path, quiet=False)
+    except Exception as e:
+        st.error(f"Error downloading file: {e}")
+        st.stop()  # Stop the Streamlit app if the file can't be downloaded
 
 # Load the Excel file and list the available sheets
-xls = pd.ExcelFile(file_path)
-sheet_names = xls.sheet_names
+try:
+    xls = pd.ExcelFile(file_path)
+    sheet_names = xls.sheet_names
+except Exception as e:
+    st.error(f"Error loading Excel file: {e}")
+    st.stop()  # Stop the Streamlit app if the file can't be loaded
 
 # Function to load a specific sheet
 def load_sheet(sheet_name):
-    df = pd.read_excel(file_path, sheet_name=sheet_name)
-    df = df.dropna(axis=1, how='all')
-    return df
+    try:
+        df = pd.read_excel(file_path, sheet_name=sheet_name)
+        df = df.dropna(axis=1, how='all')
+        return df
+    except Exception as e:
+        st.error(f"Error loading sheet '{sheet_name}': {e}")
+        st.stop()  # Stop the Streamlit app if the sheet can't be loaded
 
 # Function to convert all Date columns to datetime format
 def convert_dates(df):
